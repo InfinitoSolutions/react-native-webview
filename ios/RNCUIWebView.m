@@ -27,6 +27,7 @@ static NSString *const MessageHandlerName = @"ReactNativeWebView";
 {
   UIWebView *_webView;
   NSString *_injectedJavaScript;
+  NSString *_injectedJavaScriptBeforeLoad;
 }
 
 - (void)dealloc
@@ -234,6 +235,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
         @"navigationType": navigationTypes[@(navigationType)]
       }];
       _onLoadingStart(event);
+      
+      // TODO: Add script to _injectedJavaScriptBeforeLoad here
     }
   }
 
