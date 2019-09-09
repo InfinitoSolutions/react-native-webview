@@ -359,6 +359,11 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     ((RNCWebView) view).setInjectedJavaScript(injectedJavaScript);
   }
 
+  @ReactProp(name = "injectedJavaScriptBeforeLoad")
+  public void setInjectedJavaScriptBeforeLoad(WebView view, @Nullable String injectedJavaScriptBeforeLoad) {
+    ((RNCWebView) view).setInjectedJavaScriptBeforeLoad(injectedJavaScriptBeforeLoad);
+  }
+
   @ReactProp(name = "messagingEnabled")
   public void setMessagingEnabled(WebView view, boolean enabled) {
     ((RNCWebView) view).setMessagingEnabled(enabled);
@@ -682,6 +687,9 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         new TopLoadingStartEvent(
           webView.getId(),
           createWebViewEvent(webView, url)));
+      
+      RNCWebView reactWebView = (RNCWebView) webView;
+      reactWebView.callInjectedJavaScriptBeforeLoad();
     }
 
     @Override
@@ -885,6 +893,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   protected static class RNCWebView extends WebView implements LifecycleEventListener {
     protected @Nullable
     String injectedJS;
+    String injectedJSBeforeLoad;
     protected boolean messagingEnabled = false;
     protected @Nullable
     RNCWebViewClient mRNCWebViewClient;
@@ -956,6 +965,10 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       injectedJS = js;
     }
 
+    public void setInjectedJavaScriptBeforeLoad(@Nullable String js) {
+      injectedJSBeforeLoad = js;
+    }
+
     protected RNCWebViewBridge createRNCWebViewBridge(RNCWebView webView) {
       return new RNCWebViewBridge(webView);
     }
@@ -994,6 +1007,14 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         injectedJS != null &&
         !TextUtils.isEmpty(injectedJS)) {
         evaluateJavascriptWithFallback("(function() {\n" + injectedJS + ";\n})();");
+      }
+    }
+
+    public void callInjectedJavaScriptBeforeLoad() {
+      if (getSettings().getJavaScriptEnabled() &&
+        injectedJSBeforeLoad != null &&
+        !TextUtils.isEmpty(injectedJSBeforeLoad)) {
+        evaluateJavascriptWithFallback("(function() {\n" + injectedJSBeforeLoad + ";\n})();");
       }
     }
 

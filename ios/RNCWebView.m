@@ -145,6 +145,11 @@ static NSURLCredential* clientAuthenticationCredential;
       [wkWebViewConfig.userContentController addUserScript:script];
     }
 
+    if (_injectedJavaScriptBeforeLoad) {
+      WKUserScript *script = [[WKUserScript alloc] initWithSource:_injectedJavaScriptBeforeLoad injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+      [wkWebViewConfig.userContentController addUserScript:script];
+    }
+
     wkWebViewConfig.allowsInlineMediaPlayback = _allowsInlineMediaPlayback;
 #if WEBKIT_IOS_10_APIS_AVAILABLE
     wkWebViewConfig.mediaTypesRequiringUserActionForPlayback = _mediaPlaybackRequiresUserAction
