@@ -156,6 +156,11 @@ static NSDictionary* customCertificatesForHost;
       [wkWebViewConfig.userContentController addUserScript:script];
     }
 
+    if (_injectedJavaScript) {
+      WKUserScript *script = [[WKUserScript alloc] initWithSource:_injectedJavaScript injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+      [wkWebViewConfig.userContentController addUserScript:script];
+    }
+
     wkWebViewConfig.allowsInlineMediaPlayback = _allowsInlineMediaPlayback;
 #if WEBKIT_IOS_10_APIS_AVAILABLE
     wkWebViewConfig.mediaTypesRequiringUserActionForPlayback = _mediaPlaybackRequiresUserAction

@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSDictionary * _Nullable source;
 @property (nonatomic, assign) BOOL messagingEnabled;
 @property (nonatomic, copy) NSString * _Nullable injectedJavaScript;
+@property (nonatomic, copy) NSString * _Nullable injectedJavaScriptBeforeLoad;
 @property (nonatomic, assign) BOOL scrollEnabled;
 @property (nonatomic, assign) BOOL sharedCookiesEnabled;
 @property (nonatomic, assign) BOOL pagingEnabled;
